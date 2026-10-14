@@ -7,500 +7,738 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
 <style>
-/* Layout: tudo alinhado à esquerda; o topo é uma "parede" com os nomes dos cursos em Archivo condensada;
-   catálogo como grade curricular em linhas; marca-texto amarelo só para seleção, preço e progresso */
+/* Layout: segue a estrutura da loja atual (barra verde, menu, combo com imagem + preço, vantagens, lista de cursos, faixa de indicação, rodapé)
+   em versão mais limpa. Tema claro único, como o site original. */
 :root{
-  --paper:#ffffff;
-  --wash:#f2f5f3;
-  --ink:#10372b;      /* verde-quadro */
-  --soft:#5b6e66;
-  --rule:#d9e2dd;
-  --mark:#ffe14d;     /* marca-texto */
-  --on-mark:#1c1a00;
-  --stamp:#b8361f;    /* carimbo do certificado */
-  --ok:#1d7a4f;
-  --font:"Archivo",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+  --bg:#ffffff; --bg-soft:#f4f7fb; --line:#e3e9f1;
+  --ink:#14233a; --muted:#5d6b80;
+  --blue:#0d5bb5; --blue-dark:#08386f; --green:#18a957; --green-dark:#118544; --yellow:#ffc21a;
+  --c-adm:#2f7fd8; --c-info:#3c9a3f; --c-div:#d81b60; --c-idi:#7b2fb0; --c-prep:#ef7d16;
+  --head:"Lexend",ui-sans-serif,system-ui,sans-serif;
+  --body:"Nunito Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --shadow:0 10px 30px -12px rgba(13,40,80,.28);
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#0c1915;--wash:#12231e;--ink:#e6efe9;--soft:#93a79e;--rule:#21362f;
-  --mark:#f5d63c;--on-mark:#1c1a00;--stamp:#ef7056;--ok:#5ccf98;color-scheme:dark}}
-:root[data-theme="dark"]{
-  --paper:#0c1915;--wash:#12231e;--ink:#e6efe9;--soft:#93a79e;--rule:#21362f;
-  --mark:#f5d63c;--on-mark:#1c1a00;--stamp:#ef7056;--ok:#5ccf98;color-scheme:dark}
-
 *{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.55}
-h1,h2,h3{margin:0;font-stretch:72%;font-weight:800;line-height:1;text-wrap:balance;letter-spacing:-.005em}
-h1{font-size:clamp(2.6rem,7vw,4.8rem)}
-h2{font-size:clamp(1.9rem,4vw,2.8rem)}
-h3{font-size:1.35rem;font-weight:750}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+h1,h2,h3,h4{font-family:var(--head);margin:0;line-height:1.2;text-wrap:balance;font-weight:600}
+h1{font-size:clamp(1.8rem,3.6vw,2.6rem)}
+h2{font-size:clamp(1.5rem,2.8vw,2rem)}
+h3{font-size:1.15rem}
 p{margin:0}
-a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
-button,input,select{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+a{color:var(--blue)}
+button,input{font:inherit}
+img{display:block}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 .wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.soft{color:var(--soft)}
-.small{font-size:.85rem}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
 .num{font-variant-numeric:tabular-nums}
-.measure{max-width:60ch}
+.ico{width:1.1em;height:1.1em;flex:none;vertical-align:-.15em}
 
-.notice{background:var(--wash);border-bottom:1px solid var(--rule);font-size:.82rem;color:var(--soft)}
-.notice .wrap{padding-block:6px}
+/* barra verde */
+.topbar{background:var(--green);color:#fff;font-weight:700;font-size:.92rem}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topbar p{padding-block:9px}
+.topbar nav{display:flex}
+.topbar nav a{color:#fff;text-decoration:none;display:flex;align-items:center;gap:6px;padding:9px 16px;border-left:1px solid rgba(255,255,255,.3)}
+.topbar nav a:hover{background:var(--green-dark)}
 
 /* cabeçalho */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:2px solid var(--ink)}
-.top .wrap{display:flex;align-items:center;gap:24px;padding-block:10px;flex-wrap:wrap}
-.brand{display:flex;align-items:baseline;gap:6px;text-decoration:none}
-.brand b{font-stretch:62%;font-weight:900;font-size:1.9rem;line-height:1;letter-spacing:.01em}
-.brand span{font-size:.8rem;color:var(--soft);line-height:1.2}
-.nav{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
-.nav a{text-decoration:none;padding:6px 10px;font-weight:500;font-size:.95rem}
-.nav a[aria-current="page"]{background:var(--mark);color:var(--on-mark);font-weight:700}
+.header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:#fff;box-shadow:0 1px 0 var(--line)}
+.header .wrap{display:flex;align-items:center;gap:28px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.logo svg{width:52px;height:52px}
+.logo span{font-family:var(--head);font-weight:600;line-height:1.1;font-size:.95rem}
+.logo small{display:block;font-family:var(--body);font-weight:600;color:var(--muted);font-size:.72rem}
+.menu{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.menu a{font-family:var(--head);font-size:.93rem;color:var(--ink);text-decoration:none;padding:8px 10px;border-radius:6px}
+.menu a:hover{color:var(--blue)}
+.menu a[aria-current="page"]{color:var(--blue);font-weight:600}
+.hicons{display:flex;gap:6px;align-items:center}
+.hicons a,.hicons button{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:0;background:transparent;color:var(--ink);cursor:pointer;position:relative}
+.hicons a:hover,.hicons button:hover{background:var(--bg-soft)}
+.hicons .badge{position:absolute;top:2px;right:0;background:var(--blue);color:#fff;font-size:.65rem;font-weight:700;border-radius:999px;min-width:17px;height:17px;display:grid;place-items:center;padding:0 4px}
+.hicons .burger{display:none}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:4px;padding:13px 22px;font-weight:700;cursor:pointer;text-decoration:none;border:2px solid var(--ink)}
-.btn-solid{background:var(--ink);color:var(--paper)}
-.btn-solid:hover{background:transparent;color:var(--ink)}
-.btn-line{background:transparent;color:var(--ink)}
-.btn-line:hover{background:var(--mark);color:var(--on-mark);border-color:var(--mark)}
+/* botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:8px;padding:13px 22px;font-family:var(--head);font-weight:600;font-size:.98rem;cursor:pointer;text-decoration:none;transition:background .15s,transform .15s}
+.btn:active{transform:translateY(1px)}
+.btn-buy{background:var(--green);color:#fff}
+.btn-buy:hover{background:var(--green-dark)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--blue-dark)}
+.btn-yellow{background:var(--yellow);color:#2a1f00}
+.btn-yellow:hover{background:#f0b200}
+.btn-outline{background:#fff;color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue)}
+.btn-outline:hover{background:var(--bg-soft)}
+.btn-lg{padding:16px 28px;font-size:1.05rem}
 
-section.screen{padding-block:40px 72px}
-.mark{background:var(--mark);color:var(--on-mark);padding:.02em .12em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+/* fotos com fallback: se a foto não carregar, fica o degradê */
+.photo{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--blue-dark),var(--blue))}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.photo .bg{position:absolute;right:-6%;bottom:-12%;height:85%;width:auto;aspect-ratio:1;color:#fff;opacity:.16}
+.photo::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 20%,rgba(255,255,255,.18),transparent 45%),linear-gradient(135deg,transparent,rgba(0,0,0,.18))}
 
-/* início */
-.intro{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:48px;align-items:end;padding-bottom:28px;border-bottom:2px solid var(--ink)}
-.intro > *{min-width:0}
-.intro p{margin-top:16px}
-.offer{display:flex;flex-direction:column;gap:10px}
-.offer .price{font-stretch:72%;font-weight:850;font-size:clamp(2.4rem,5vw,3.2rem);line-height:1.1;white-space:nowrap}
-.offer .was{text-decoration:line-through;color:var(--soft)}
-.offer .ctas{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+section.screen{padding-block:36px 0}
+.block{padding-block:56px}
+.block-soft{background:var(--bg-soft)}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.section-head p{max-width:60ch}
 
-.wall{padding-block:24px 8px;font-stretch:62%;font-weight:800;font-size:clamp(1.7rem,4.2vw,3.1rem);line-height:1.04;letter-spacing:-.005em}
-.wall button{all:unset;cursor:pointer;color:var(--ink)}
-.wall button.alt{color:var(--soft)}
-.wall button:hover,.wall button:focus-visible{background:var(--mark);color:var(--on-mark)}
-.wall .sep{color:var(--rule);font-weight:400}
-.wall .item{white-space:nowrap}
-@media (max-width:520px){.wall .item{white-space:normal}}
-.wall .more{color:var(--soft);font-weight:500;font-stretch:80%;white-space:nowrap}
-.wall-caption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.9rem;color:var(--soft);padding-bottom:40px}
+/* ===== COMBO (início) ===== */
+.combo{display:grid;grid-template-columns:420px minmax(0,1fr);gap:48px;align-items:center}
+.combo > *{min-width:0}
+.flyer{border-radius:14px;overflow:hidden;box-shadow:var(--shadow);background:#fff}
+.flyer-top{background:linear-gradient(140deg,#4b1f8f,#7b3fd0);color:#fff;padding:26px 24px 22px;text-align:center;position:relative}
+.flyer-top svg{width:44px;height:44px;margin:0 auto 6px}
+.flyer-top small{display:block;font-family:var(--head);color:#ffd36b;font-size:.85rem}
+.flyer-top b{display:block;font-family:var(--head);font-size:1.7rem;font-weight:700;line-height:1.1}
+.flyer-top i{font-family:var(--head);font-style:normal;color:#ffd36b;font-size:.9rem}
+.flyer-cats{padding:16px 18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fcat{border-radius:10px;padding:12px;color:#fff;display:flex;flex-direction:column;gap:2px;text-decoration:none;cursor:pointer;border:0;text-align:left;font:inherit}
+.fcat b{font-family:var(--head);font-size:1.6rem;line-height:1}
+.fcat span{font-size:.82rem;font-weight:700;opacity:.95}
+.fcat:hover{filter:brightness(1.08)}
+.fcat.wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:10px}
+.combo-info{display:flex;flex-direction:column;gap:18px}
+.tagline{display:inline-flex;align-items:center;gap:8px;background:#e8f6ee;color:var(--green-dark);font-weight:700;font-size:.85rem;padding:6px 12px;border-radius:999px;align-self:flex-start}
+.facts{display:flex;gap:22px;flex-wrap:wrap;color:var(--muted)}
+.facts span{display:flex;align-items:center;gap:6px}
+.facts b{color:var(--ink)}
+.pricebox{border:1px solid var(--line);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:6px;background:linear-gradient(180deg,#fff,var(--bg-soft))}
+.pricebox .from{color:var(--muted)}
+.pricebox .from s{color:var(--muted)}
+.pricebox .now{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pricebox .now b{font-family:var(--head);font-size:clamp(2.4rem,5vw,3.2rem);color:var(--green);font-weight:700;line-height:1}
+.pricebox .save{background:var(--yellow);color:#2a1f00;font-weight:800;font-size:.8rem;padding:3px 9px;border-radius:999px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.trust{display:flex;gap:18px;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.trust span{display:flex;align-items:center;gap:6px}
+.trust svg{color:var(--green)}
 
-.facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.facts div{padding:20px 20px 20px 0}
-.facts div + div{border-left:1px solid var(--rule);padding-left:20px}
-.facts b{display:block;font-stretch:72%;font-weight:800;font-size:2.2rem;line-height:1}
+/* vantagens */
+.perks{position:relative;border-radius:16px;overflow:hidden;color:#fff;margin-top:56px}
+.perks .photo{position:absolute;inset:0}
+.perks::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,30,62,.92) 0%,rgba(8,30,62,.78) 55%,rgba(8,30,62,.35) 100%)}
+.perks-in{position:relative;z-index:1;padding:44px 40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px 40px}
+.perks-in h2{grid-column:1/-1;margin-bottom:6px}
+.perk{display:flex;gap:14px;align-items:flex-start}
+.perk i{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none;color:var(--blue)}
+.perk i svg{width:24px;height:24px}
+.perk b{font-family:var(--head);font-weight:600;display:block;font-size:1.05rem}
+.perk p{opacity:.85;font-size:.95rem}
 
-.block{padding-block:56px 0}
-.block > h2{margin-bottom:24px}
-.areas{display:flex;flex-wrap:wrap;gap:8px}
-.area{border:1.5px solid var(--ink);background:transparent;border-radius:999px;padding:9px 16px;cursor:pointer;font-weight:600}
-.area small{color:var(--soft);font-weight:500;margin-left:6px}
-.area:hover{background:var(--mark);color:var(--on-mark);border-color:var(--mark)}
-.area:hover small{color:var(--on-mark)}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;counter-reset:s;list-style:none;margin:0;padding:0}
-.steps li{display:flex;flex-direction:column;gap:8px}
-.steps li::before{counter-increment:s;content:counter(s);font-stretch:62%;font-weight:900;font-size:3rem;line-height:.9;color:var(--ink)}
-.steps h3{font-size:1.2rem}
-.faq{max-width:760px}
-details{border-top:1px solid var(--rule);padding-block:16px}
-details:last-child{border-bottom:1px solid var(--rule)}
-summary{cursor:pointer;font-weight:650;font-size:1.05rem}
-details p{margin-top:8px;color:var(--soft);max-width:62ch}
+/* categorias */
+.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.cat{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:3/4;max-width:100%;color:#fff;text-align:left;border:0;padding:0;cursor:pointer;font:inherit;box-shadow:var(--shadow)}
+.cat .photo{position:absolute;inset:0;background:var(--c)}
+.cat .photo img{transition:transform .4s}
+.cat:hover .photo img{transform:scale(1.05)}
+.cat::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,color-mix(in srgb,var(--c) 92%,#000) 85%)}
+.cat .label{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:16px;display:flex;flex-direction:column;gap:2px}
+.cat .label b{font-family:var(--head);font-size:1.12rem;font-weight:600;line-height:1.2}
+.cat .label span{font-size:.85rem;opacity:.92;font-weight:700}
+.cat .glyph{position:absolute;top:14px;left:14px;z-index:1;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.95);color:var(--c);display:grid;place-items:center}
+.cat .glyph svg{width:22px;height:22px}
 
-/* catálogo: grade curricular */
-.cat-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
-.tools{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-block:24px 8px}
-.search{flex:1 1 280px;padding:12px 14px;border:2px solid var(--ink);border-radius:4px;background:var(--paper)}
-.tabs{display:flex;gap:2px;flex-wrap:wrap}
-.tab{border:0;background:transparent;padding:6px 10px;cursor:pointer;font-weight:500}
-.tab[aria-pressed="true"]{background:var(--mark);color:var(--on-mark);font-weight:700}
-.table{width:100%;border-collapse:collapse}
-.table th{text-align:left;font-weight:600;font-size:.82rem;color:var(--soft);padding:10px 12px 10px 0;border-bottom:2px solid var(--ink)}
-.table td{padding:14px 12px 14px 0;border-bottom:1px solid var(--rule);vertical-align:baseline}
-.table tr[data-id]{cursor:pointer}
-.table tr[data-id]:hover td{background:var(--wash)}
-.table .name{font-stretch:80%;font-weight:700;font-size:1.2rem}
-.table .h{text-align:right;white-space:nowrap}
-.table .go{text-align:right;white-space:nowrap;font-weight:600}
-.empty{padding:32px 0;color:var(--soft)}
+/* lista de cursos */
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.search{flex:1 1 280px;display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:10px;padding:0 14px;background:#fff}
+.search:focus-within{border-color:var(--blue)}
+.search input{border:0;outline:0;padding:13px 0;width:100%;background:transparent;color:var(--ink)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:7px 14px;font-size:.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--c,var(--blue))}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.courses{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.course{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;text-align:left;font:inherit;color:var(--ink)}
+.course:hover{border-color:var(--c);box-shadow:0 4px 14px -8px rgba(13,40,80,.35)}
+.course .dot{width:34px;height:34px;border-radius:8px;flex:none;display:grid;place-items:center;color:#fff;background:var(--c);font-family:var(--head);font-weight:600;font-size:.8rem}
+.course span{font-weight:700;font-size:.95rem;line-height:1.3}
+.course small{display:block;color:var(--muted);font-weight:600;font-size:.78rem}
+.count{color:var(--muted);font-size:.9rem;margin-bottom:12px}
+.empty{padding:24px;border:1px dashed var(--line);border-radius:10px;color:var(--muted)}
 
-/* curso */
-.crumbs{font-size:.9rem;color:var(--soft);margin-bottom:20px}
-.detail{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:56px;align-items:start}
-.detail > *{min-width:0}
-.detail h1{font-size:clamp(2.4rem,6vw,4.2rem)}
-.meta{display:flex;gap:24px;flex-wrap:wrap;margin-block:20px;font-size:.95rem}
-.meta b{display:block;font-stretch:72%;font-size:1.7rem;line-height:1.1}
-.syllabus{margin-top:28px}
-.syllabus table{width:100%;border-collapse:collapse}
-.syllabus td{padding:12px 0;border-bottom:1px solid var(--rule)}
-.syllabus td:first-child{width:3rem;font-stretch:62%;font-weight:800;font-size:1.4rem;color:var(--soft)}
-.syllabus td:last-child{text-align:right;white-space:nowrap}
-.side{border:2px solid var(--ink);padding:24px;display:flex;flex-direction:column;gap:12px;position:sticky;top:90px}
-.side .price{font-stretch:72%;font-weight:850;font-size:2.4rem;line-height:1.1;white-space:nowrap}
-.side ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px}
-.related{margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+/* como funciona */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:8px;counter-increment:s}
+.steps li::before{content:counter(s);width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-family:var(--head);font-weight:600}
+/* faq */
+.faq{max-width:820px}
+details{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:#fff}
+details + details{margin-top:10px}
+summary{cursor:pointer;font-family:var(--head);font-weight:500}
+details p{margin-top:10px;color:var(--muted)}
 
-/* matrícula */
-.checkout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:56px;align-items:start}
+/* faixa indique */
+.refer{background:linear-gradient(90deg,var(--blue-dark),var(--blue));color:#fff}
+.refer .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-block:26px}
+.refer h3{font-size:clamp(1.2rem,2.4vw,1.6rem);font-weight:500}
+.refer h3 b{font-weight:700}
+
+/* rodapé enxuto */
+footer{background:#0b1a2e;color:#c9d4e3;font-size:.9rem}
+footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:28px;padding-block:32px 24px}
+footer .cols > *{min-width:0;display:flex;flex-direction:column;gap:6px}
+footer h4{color:#fff;font-size:.95rem;margin-bottom:4px}
+footer a{color:#c9d4e3;text-decoration:none}
+footer a:hover{color:#fff}
+.pay{display:flex;gap:6px;flex-wrap:wrap}
+.pay span{background:#fff;color:#14233a;border-radius:4px;font-size:.7rem;font-weight:800;padding:3px 7px}
+.seals{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.seals span{display:flex;align-items:center;gap:6px;border:1px solid #2a3d58;border-radius:6px;padding:5px 9px;font-size:.78rem;color:#fff}
+.seals svg{color:#4ade80}
+.legal{border-top:1px solid #1f3149;padding-block:14px;font-size:.8rem;color:#8193ab;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* whatsapp flutuante */
+.zap{position:fixed;left:max(18px,env(safe-area-inset-left,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;gap:10px;background:#25d366;color:#fff;text-decoration:none;border-radius:999px;padding:10px 18px 10px 10px;font-weight:800;font-size:.85rem;line-height:1.1;box-shadow:0 8px 24px -6px rgba(0,0,0,.35)}
+.zap i{width:40px;height:40px;border-radius:50%;background:#fff;color:#25d366;display:grid;place-items:center}
+.zap small{display:block;font-weight:600;opacity:.9;font-size:.72rem}
+
+/* ===== curso ===== */
+.crumbs{font-size:.88rem;color:var(--muted);margin-bottom:18px}
+.crumbs a{color:var(--muted)}
+.course-hero{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:40px;align-items:start}
+.course-hero > *{min-width:0}
+.cover{border-radius:14px;aspect-ratio:16/7;max-width:100%;display:flex;align-items:flex-end;padding:22px;color:#fff;position:relative}
+.cover .photo{position:absolute;inset:0;border-radius:14px;background:var(--c)}
+.cover::after{content:"";position:absolute;inset:0;border-radius:14px;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.65))}
+.cover > div{position:relative;z-index:1}
+.pill{display:inline-block;background:var(--c);color:#fff;box-shadow:0 0 0 1.5px rgba(255,255,255,.7);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:999px}
+.learn{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;margin-top:14px;padding:0;list-style:none}
+.learn li{display:flex;gap:8px}
+.learn svg{color:var(--green);margin-top:4px}
+.buybox{border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow);position:sticky;top:96px;background:#fff}
+.buybox .now b{font-family:var(--head);font-size:2.4rem;color:var(--green);font-weight:700;line-height:1}
+.buybox ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.93rem}
+.buybox li{display:flex;gap:8px}
+.buybox li svg{color:var(--green);margin-top:4px}
+
+/* ===== checkout ===== */
+.checkout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:36px;align-items:start}
 .checkout > *{min-width:0}
-.trail{display:flex;gap:20px;flex-wrap:wrap;list-style:none;margin:0 0 28px;padding:0;font-size:.95rem;color:var(--soft);counter-reset:t}
-.trail li{counter-increment:t}
-.trail li::before{content:counter(t) ". "}
-.trail li.on{color:var(--ink);font-weight:700}
-.form{display:flex;flex-direction:column;gap:18px;max-width:620px}
+.stepper{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.stepper span{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.88rem;color:var(--muted)}
+.stepper span i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--line);color:var(--muted);font-style:normal;font-size:.8rem}
+.stepper span.on{color:var(--ink)}
+.stepper span.on i{background:var(--green);color:#fff}
+.stepper .bar{flex:0 0 28px;height:2px;background:var(--line);align-self:center}
+.card{border:1px solid var(--line);border-radius:14px;padding:24px;background:#fff;display:flex;flex-direction:column;gap:16px}
 .field{display:flex;flex-direction:column;gap:6px}
-.field label{font-weight:600;font-size:.92rem}
-.field input{padding:12px;border:1.5px solid var(--soft);border-radius:4px;background:var(--paper)}
-.field input:focus{border-color:var(--ink)}
+.field label{font-weight:700;font-size:.9rem}
+.field input{padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;color:var(--ink);background:#fff}
+.field input:focus{border-color:var(--blue);outline:0}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-legend{font-weight:600;font-size:.92rem;margin-bottom:8px}
-.opt{display:flex;gap:12px;align-items:baseline;padding:14px;border:1.5px solid var(--rule);border-radius:4px;cursor:pointer}
-.opt:has(input:checked){border-color:var(--ink);background:var(--wash)}
-.opt input{accent-color:var(--ink)}
-.opt span{flex:1}
-.err{color:var(--stamp);font-weight:600;min-height:1.4em}
-.done{border-left:4px solid var(--ok);padding:12px 16px;background:var(--wash)}
-.receipt{border-top:2px solid var(--ink);padding-top:16px;display:flex;flex-direction:column;gap:10px}
+.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.method{border:1.5px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.method input{position:absolute;opacity:0;pointer-events:none}
+.method:has(input:checked){border-color:var(--green);background:#effaf3}
+.method:has(input:focus-visible){outline:3px solid var(--yellow)}
+.method b{font-family:var(--head);font-weight:600}
+.method small{color:var(--muted)}
+.err{color:#c62828;font-weight:700;min-height:1.4em;font-size:.92rem}
+.ok{background:#effaf3;border:1px solid #bfe7cf;border-radius:10px;padding:14px 16px}
+.summary{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.summary .photo{height:120px}
+.summary .in{padding:20px;display:flex;flex-direction:column;gap:10px}
 .line{display:flex;justify-content:space-between;gap:12px}
-.total{border-top:1px solid var(--rule);padding-top:10px;font-weight:800;font-size:1.25rem}
+.total{border-top:1px solid var(--line);padding-top:12px;font-family:var(--head);font-weight:600;font-size:1.2rem}
 
-/* aluno */
-.hello{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;padding-bottom:24px;border-bottom:2px solid var(--ink)}
-.stats{display:flex;gap:36px;flex-wrap:wrap}
-.stats b{display:block;font-stretch:72%;font-weight:800;font-size:2rem;line-height:1}
-.progress-row{display:grid;grid-template-columns:minmax(0,1fr) 220px 130px;gap:20px;align-items:center;padding-block:16px;border-bottom:1px solid var(--rule)}
-.progress-row > *{min-width:0}
-.bar{height:10px;background:var(--wash);border:1px solid var(--rule)}
-.bar i{display:block;height:100%;background:var(--mark)}
-.state{text-align:right;font-weight:600;font-size:.95rem}
-.state a{color:var(--ok)}
+/* ===== aluno ===== */
+.student-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.avatar{width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-family:var(--head);font-weight:600;font-size:1.2rem}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:18px;background:#fff}
+.kpi b{display:block;font-family:var(--head);font-size:1.7rem;font-weight:600}
+.mycourses{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.mc{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.mc .photo{height:110px;background:var(--c)}
+.mc .in{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1}
+.prog{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--green)}
+.mc .row{display:flex;justify-content:space-between;align-items:center;font-size:.88rem;margin-top:auto}
 
-/* certificado */
-.verify{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:56px;align-items:start}
-.verify form{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
-.verify input{flex:1 1 220px;padding:12px;border:2px solid var(--ink);border-radius:4px;background:var(--paper);letter-spacing:.04em;font-weight:600}
-.cert{position:relative;border:1.5px solid var(--ink);outline:6px double var(--rule);outline-offset:-14px;padding:40px 36px;background:var(--paper);display:flex;flex-direction:column;gap:10px}
-.cert .who{font-stretch:80%;font-weight:800;font-size:2rem;line-height:1.1}
-.seal{position:absolute;right:24px;top:24px;width:86px;height:86px;border:2.5px solid var(--stamp);border-radius:50%;display:grid;place-items:center;text-align:center;color:var(--stamp);font-weight:800;font-size:.72rem;line-height:1.15;transform:rotate(-12deg)}
-.cert .code{font-weight:600;letter-spacing:.04em;color:var(--soft);font-size:.9rem;margin-top:8px}
-.miss{border-left:4px solid var(--stamp);padding:12px 16px;background:var(--wash)}
+/* ===== certificado ===== */
+.verify{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:44px;align-items:start}
+.verify form{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.verify input{flex:1 1 220px;padding:13px 14px;border:1.5px solid var(--line);border-radius:8px;letter-spacing:.04em;font-weight:700;color:var(--ink)}
+.verify input:focus{border-color:var(--blue);outline:0}
+.cert{border-radius:12px;padding:10px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));box-shadow:var(--shadow)}
+.cert-in{background:#fff;border-radius:6px;padding:34px 30px;display:flex;flex-direction:column;gap:8px;position:relative;text-align:center;align-items:center}
+.cert-in .t{font-family:var(--head);letter-spacing:.2em;font-size:.8rem;color:var(--blue)}
+.cert-in .who{font-family:var(--head);font-size:1.7rem;font-weight:600}
+.valid{display:inline-flex;align-items:center;gap:6px;background:#effaf3;color:var(--green-dark);font-weight:800;font-size:.85rem;padding:6px 12px;border-radius:999px}
+.miss{background:#fff4f4;border:1px solid #f3c9c9;border-radius:10px;padding:14px 16px}
+.example{font-size:.8rem;color:var(--muted)}
 
-footer{border-top:2px solid var(--ink)}
-footer .wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px;padding-block:36px;font-size:.95rem}
-footer .wrap > *{min-width:0;display:flex;flex-direction:column;gap:6px}
-footer b{font-weight:700}
-
+@media (max-width:1020px){
+  .menu{display:none}
+  .menu.open{display:flex;position:absolute;left:0;right:0;top:100%;background:#fff;flex-direction:column;padding:8px max(16px,env(safe-area-inset-left,0px)) 16px;box-shadow:0 12px 20px -12px rgba(0,0,0,.2)}
+  .hicons .burger{display:grid}
+  .hicons{margin-left:auto}
+  .cats{grid-template-columns:repeat(3,1fr)}
+}
 @media (max-width:860px){
-  .intro,.detail,.checkout,.verify{grid-template-columns:1fr}
-  .side{position:static}
+  .combo,.course-hero,.checkout,.verify{grid-template-columns:1fr}
+  .flyer{max-width:440px}
+  .perks-in{grid-template-columns:1fr;padding:32px 22px}
   .steps{grid-template-columns:1fr 1fr}
-  footer .wrap{grid-template-columns:1fr}
-  .nav{margin-left:0;width:100%;overflow-x:auto;flex-wrap:nowrap}
-  .nav a{white-space:nowrap}
-  .progress-row{grid-template-columns:minmax(0,1fr) auto}
-  .progress-row .bar{grid-column:1/-1;order:3}
-  .table .area-col{display:none}
+  footer .cols{grid-template-columns:1fr 1fr}
+  .buybox{position:static}
+  .kpis{grid-template-columns:1fr}
 }
-@media (max-width:520px){
-  .facts{grid-template-columns:1fr}
-  .facts div + div{border-left:0;border-top:1px solid var(--rule);padding-left:0}
-  .steps,.row2{grid-template-columns:1fr}
-  .table .go{display:none}
-  .seal{width:66px;height:66px;font-size:.6rem;right:16px;top:16px}
+@media (max-width:560px){
+  .topbar p{display:none}
+  .topbar .wrap{justify-content:center}
+  .topbar nav a{padding:9px 10px;font-size:.82rem}
+  .cats{grid-template-columns:1fr 1fr}
+  .steps,.row2,.methods,.learn{grid-template-columns:1fr}
+  .hicons .social{display:none}
+  .zap span{display:none}
+  .zap{padding:10px}
 }
-@media (prefers-reduced-motion:no-preference){
-  .wall button{transition:background .12s}
-  .wall.enter button{animation:rise .5s both}
-  @keyframes rise{from{opacity:.15}to{opacity:1}}
-}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 
-<div class="notice"><div class="wrap">Protótipo para apresentação. Preços, aluna e certificado são exemplos.</div></div>
-<header class="top">
+<!-- ícones -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-user" viewBox="0 0 24 24"><path fill="currentColor" d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3Zm-6 9.9V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.1l-6 3.3-6-3.3Z"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 17h-2v-2h2v2Zm2.1-7.8-.9.9c-.7.7-1.2 1.3-1.2 2.9h-2v-.5c0-1.1.5-2.1 1.2-2.8l1.2-1.3a2 2 0 1 0-3.4-1.4H8a4 4 0 1 1 7.1 2.2Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Zm5-1.5L21 21"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path fill="currentColor" d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM5.2 4H2V2h4.6l.9 2H21l-3.6 8.4a2 2 0 0 1-1.8 1.1H8.1L7.2 15H19v2H5l2.5-4.4L5.2 4Z"/></symbol>
+  <symbol id="i-fb" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#1877f2"/><path fill="#fff" d="M15.5 24v-9h3l.5-3.5h-3.5V9.3c0-1 .3-1.7 1.8-1.7H19V4.5c-.3 0-1.4-.1-2.7-.1-2.7 0-4.5 1.6-4.5 4.6v2.5H9V15h2.8v9h3.7Z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#feda75"/><stop offset=".4" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#igg)"/><rect x="5.5" y="5.5" width="13" height="13" rx="4" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="3.2" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="16.3" cy="7.7" r="1" fill="#fff"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.5 14.1c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1a17 17 0 0 1-1.7-.6 13.4 13.4 0 0 1-5.1-4.5c-.4-.6-1-1.6-1-3s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.3.5-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4Z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3h8l10 10-8 8L3 11V3Zm4.5 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path fill="currentColor" d="M18 16a3 3 0 0 0-2.4 1.2l-6.8-3.4a3 3 0 0 0 0-1.6l6.8-3.4A3 3 0 1 0 15 7l-6.8 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path fill="#fff" d="m10 9 5 3-5 3V9Z"/></symbol>
+  <symbol id="i-medal" viewBox="0 0 24 24"><path fill="#e53935" d="M7 2h4l2 5-3 1-3-6Zm10 0h-4l-2 5 3 1 3-6Z"/><circle cx="12" cy="15" r="6.5" fill="#fbc02d"/><circle cx="12" cy="15" r="4" fill="#f9a825"/><path fill="#fff" d="m12 12.2.9 1.8 2 .3-1.4 1.4.3 2-1.8-1-1.8 1 .3-2-1.4-1.4 2-.3.9-1.8Z"/></symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a8 8 0 0 0-8 8v6a3 3 0 0 0 3 3h2v-8H6v-1a6 6 0 1 1 12 0v1h-3v8h3a3 3 0 0 0 .9-.1A3 3 0 0 1 16 22h-3v2h3a5 5 0 0 0 5-5v-8a8 8 0 0 0-9-8Z"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="3" fill="#e53935"/><path fill="#fff" d="m10 8 5 3-5 3V8Z"/><rect x="7" y="20" width="10" height="2" rx="1" fill="currentColor"/></symbol>
+  <symbol id="i-pace" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ffca28"/><path fill="none" stroke="#5d4037" stroke-width="2" stroke-linecap="round" d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><path fill="currentColor" d="M17 9V7A5 5 0 0 0 7 7v2H5v13h14V9h-2Zm-8-2a3 3 0 0 1 6 0v2H9V7Zm4 10.7V19h-2v-1.3a2 2 0 1 1 2 0Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3Zm-1.5 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="c-adm" viewBox="0 0 24 24"><path fill="currentColor" d="M9 3h6a2 2 0 0 1 2 2v2h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3V5a2 2 0 0 1 2-2Zm0 4h6V5H9v2Z"/></symbol>
+  <symbol id="c-info" viewBox="0 0 24 24"><path fill="currentColor" d="M3 4h18a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-7v2h3v2H7v-2h3v-2H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm1 2v9h16V6H4Z"/></symbol>
+  <symbol id="c-div" viewBox="0 0 24 24"><path fill="currentColor" d="m22.7 19-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4Z"/></symbol>
+  <symbol id="c-idi" viewBox="0 0 24 24"><path fill="currentColor" d="M4 3h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm14 6h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1v3l-4-3h-5a2 2 0 0 1-2-2v-2h6a4 4 0 0 0 4-4V9Z"/></symbol>
+  <symbol id="c-prep" viewBox="0 0 24 24"><path fill="currentColor" d="M5 3h11l3 3v15H5V3Zm3 6v2h8V9H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"/></symbol>
+</svg>
+
+<div class="topbar">
   <div class="wrap">
-    <a class="brand" href="#inicio"><b>INE-RJ</b><span>Grupo INE-RJ<br>desde 1982</span></a>
-    <nav class="nav" aria-label="Principal">
-      <a href="#inicio">Início</a>
-      <a href="#catalogo">Cursos</a>
-      <a href="#curso">Página do curso</a>
-      <a href="#checkout">Matrícula</a>
-      <a href="#aluno">Área do aluno</a>
-      <a href="#certificado">Verificar certificado</a>
+    <p>Mais de 70 cursos para você escolher!</p>
+    <nav aria-label="Atalhos da conta">
+      <a href="#aluno"><svg class="ico"><use href="#i-user"/></svg>Minha conta</a>
+      <a href="#aluno"><svg class="ico"><use href="#i-cap"/></svg>Meus cursos</a>
+      <a href="#suporte" data-scroll="faq"><svg class="ico"><use href="#i-help"/></svg>Suporte</a>
     </nav>
+  </div>
+</div>
+
+<header class="header">
+  <div class="wrap" style="position:relative">
+    <a class="logo" href="#inicio" aria-label="Grupo INE-RJ, página inicial">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="#0d5bb5"/><circle cx="32" cy="32" r="27" fill="none" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.5"/><circle cx="32" cy="17" r="4" fill="#fff"/><path d="M26 25h12l-2 8h-8z" fill="#fff"/><text x="32" y="47" text-anchor="middle" font-family="Lexend,sans-serif" font-weight="700" font-style="italic" font-size="14" fill="#fff">INE-RJ</text></svg>
+      <span>Grupo INE-RJ<small>Educação profissional desde 1982</small></span>
+    </a>
+    <nav class="menu" id="menu" aria-label="Principal">
+      <a href="#inicio">Home</a>
+      <a href="#cursos">Nossos cursos</a>
+      <a href="#inicio" data-scroll="sobre">Quem somos</a>
+      <a href="#certificado">Verificar certificado</a>
+      <a href="#inicio" data-scroll="faq">Fale conosco</a>
+    </nav>
+    <div class="hicons">
+      <a href="#cursos" aria-label="Buscar curso"><svg class="ico" style="width:22px;height:22px"><use href="#i-search"/></svg></a>
+      <a href="#checkout" aria-label="Carrinho com 1 item"><svg class="ico" style="width:22px;height:22px"><use href="#i-cart"/></svg><span class="badge" id="cartBadge">1</span></a>
+      <a class="social" href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ico" style="width:24px;height:24px"><use href="#i-fb"/></svg></a>
+      <a class="social" href="https://www.instagram.com/grupo_inerj/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ico" style="width:24px;height:24px"><use href="#i-ig"/></svg></a>
+      <button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><svg class="ico" style="width:24px;height:24px"><use href="#i-menu"/></svg></button>
+    </div>
   </div>
 </header>
 
 <main>
-<!-- 1. INÍCIO -->
-<section class="screen wrap" id="s-inicio">
-  <div class="intro">
-    <div>
-      <h1>Uma matrícula. Mais de 70 cursos.</h1>
-      <p class="soft measure">Informática, design, tecnologia, gestão, manutenção e idiomas, todos online. Estude pelo celular ou computador e receba um certificado para cada curso que concluir.</p>
-    </div>
-    <div class="offer">
-      <span class="soft small">Combo com todos os cursos</span>
-      <span class="was small num">de R$ 1.497,00</span>
-      <span class="price num"><span class="mark">12× R$ 39,90</span></span>
-      <span class="num">ou R$ 397,00 no Pix</span>
-      <div class="ctas">
-        <a class="btn btn-solid" href="#checkout">Fazer matrícula</a>
-        <a class="btn btn-line" href="#catalogo">Ver cursos</a>
+<!-- ===== 1. COMBO ===== -->
+<section class="screen" id="s-inicio">
+  <div class="wrap">
+    <div class="combo">
+      <div class="flyer">
+        <div class="flyer-top">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cap" style="color:#fff"/></svg>
+          <small>Conheça</small>
+          <b>Nossos cursos</b>
+          <i>e mude de vida</i>
+        </div>
+        <div class="flyer-cats" id="flyerCats"></div>
+      </div>
+
+      <div class="combo-info">
+        <span class="tagline"><svg class="ico"><use href="#i-check"/></svg>Combo com acesso a todos os cursos</span>
+        <h1>Combo todos os cursos</h1>
+        <div class="facts">
+          <span><svg class="ico"><use href="#i-clock"/></svg>Carga horária: <b>1.000 horas</b></span>
+          <span><svg class="ico"><use href="#i-tag"/></svg>Categoria: <b>Combos</b></span>
+          <span><svg class="ico"><use href="#i-cap"/></svg><b id="totalCourses">90</b> cursos incluídos</span>
+        </div>
+        <div class="pricebox">
+          <span class="from">De <s class="num">R$ 500,00</s> por apenas</span>
+          <div class="now"><b class="num">R$ 300,00</b><span class="save">Economize R$ 200</span></div>
+          <span class="muted">ou <b class="num" style="color:var(--ink)">3× de R$ 100,00</b> no cartão</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-buy btn-lg" href="#checkout"><svg class="ico"><use href="#i-cart"/></svg>Comprar agora</a>
+          <button class="btn btn-blue" type="button" id="shareBtn"><svg class="ico"><use href="#i-share"/></svg>Compartilhar</button>
+          <a class="btn btn-yellow" href="#curso" data-id="0"><svg class="ico"><use href="#i-play"/></svg>Ver aula grátis</a>
+        </div>
+        <p class="small muted" id="shareMsg" role="status"></p>
+        <div class="trust">
+          <span><svg class="ico"><use href="#i-lock"/></svg>Compra segura</span>
+          <span><svg class="ico"><use href="#i-shield"/></svg>7 dias de garantia</span>
+          <span><svg class="ico"><use href="#i-zap"/></svg>Acesso enviado no WhatsApp</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="wall enter" id="wall" aria-label="Cursos incluídos no combo"></div>
-  <div class="wall-caption"><span>Toque em um curso para ver a ementa.</span><a href="#catalogo">Ver a lista completa com carga horária</a></div>
-
-  <div class="facts">
-    <div><b class="num">1.000 h</b><span class="soft">de carga horária somando todos os cursos</span></div>
-    <div><b class="num">12 meses</b><span class="soft">de acesso, no seu ritmo</span></div>
-    <div><b class="num">7 dias</b><span class="soft">para pedir o dinheiro de volta</span></div>
+    <div class="perks">
+      <div class="photo"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=70" alt="" loading="lazy" onerror="this.remove()"></div>
+      <div class="perks-in">
+        <h2>Nossas vantagens</h2>
+        <div class="perk"><i><svg><use href="#i-medal"/></svg></i><div><b>Certificado reconhecido</b><p>Certificado de curso livre com código para verificação online.</p></div></div>
+        <div class="perk"><i><svg><use href="#i-headset"/></svg></i><div><b>Suporte de segunda a sábado</b><p>Atendimento online das 8h às 18h.</p></div></div>
+        <div class="perk"><i><svg><use href="#i-video"/></svg></i><div><b>Aulas de qualidade</b><p>Videoaulas objetivas, com aprendizado garantido.</p></div></div>
+        <div class="perk"><i><svg><use href="#i-pace"/></svg></i><div><b>Estude no seu ritmo</b><p>Assista e revise as aulas quantas vezes quiser.</p></div></div>
+      </div>
+    </div>
   </div>
 
   <div class="block">
-    <h2>Comece pela sua área</h2>
-    <div class="areas" id="areas"></div>
-  </div>
-
-  <div class="block">
-    <h2>Como funciona</h2>
-    <ol class="steps">
-      <li><h3>Faça a matrícula</h3><p class="soft">Pix, cartão em até 12 vezes ou boleto.</p></li>
-      <li><h3>Receba o acesso</h3><p class="soft">Login e senha chegam por e-mail e WhatsApp assim que o pagamento é confirmado.</p></li>
-      <li><h3>Estude no seu ritmo</h3><p class="soft">Videoaulas, apostilas e exercícios. Seu progresso fica salvo.</p></li>
-      <li><h3>Emita o certificado</h3><p class="soft">Ao concluir, baixe o PDF com código de verificação.</p></li>
-    </ol>
-  </div>
-
-  <div class="block faq">
-    <h2>Perguntas frequentes</h2>
-    <details><summary>O certificado é reconhecido?</summary><p>São certificados de cursos livres, amparados pela Lei 9.394/96 e pelo Decreto 5.154/04. Valem para currículo, horas complementares e comprovação de capacitação. Não substituem diploma técnico ou de graduação.</p></details>
-    <details><summary>Quanto tempo tenho para concluir?</summary><p>O acesso vale por 12 meses a partir da matrícula. Você faz os cursos na ordem que quiser.</p></details>
-    <details><summary>Posso estudar pelo celular?</summary><p>Sim. A plataforma funciona no navegador do celular, do tablet ou do computador.</p></details>
-    <details><summary>E se eu desistir?</summary><p>Peça o reembolso em até 7 dias depois da compra e você recebe o valor integral.</p></details>
-  </div>
-</section>
-
-<!-- 2. CATÁLOGO -->
-<section class="screen wrap" id="s-catalogo" hidden>
-  <div class="cat-head">
-    <h1>Cursos do combo</h1>
-    <p class="soft" id="count"></p>
-  </div>
-  <div class="tools">
-    <input class="search" id="q" type="search" placeholder="Buscar curso, por exemplo: Excel, Photoshop, celular" aria-label="Buscar curso">
-  </div>
-  <div class="tabs" id="tabs" role="group" aria-label="Filtrar por área"></div>
-  <div style="overflow-x:auto;margin-top:16px">
-    <table class="table">
-      <thead><tr><th>Curso</th><th class="area-col">Área</th><th class="h">Carga horária</th><th class="go"><span hidden>Abrir</span></th></tr></thead>
-      <tbody id="rows"></tbody>
-    </table>
-  </div>
-</section>
-
-<!-- 3. CURSO -->
-<section class="screen wrap" id="s-curso" hidden></section>
-
-<!-- 4. MATRÍCULA -->
-<section class="screen wrap" id="s-checkout" hidden>
-  <ol class="trail"><li class="on">Seus dados</li><li class="on">Pagamento</li><li id="st3">Acesso liberado</li></ol>
-  <div class="checkout">
-    <form id="form" class="form" novalidate>
-      <h1>Matrícula no combo</h1>
-      <div class="field"><label for="nome">Nome completo, como vai sair no certificado</label><input id="nome" autocomplete="name" value="Maria das Graças Souza"></div>
-      <div class="row2">
-        <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" value="maria.souza@email.com"></div>
-        <div class="field"><label for="zap">WhatsApp</label><input id="zap" inputmode="tel" autocomplete="tel" value="(21) 99876-5432"></div>
+    <div class="wrap">
+      <div class="section-head">
+        <div><h2>Escolha por área</h2><p class="muted">Todas as áreas estão incluídas no combo.</p></div>
       </div>
-      <div class="field"><label for="cpf">CPF</label><input id="cpf" inputmode="numeric" value="123.456.789-09"></div>
-      <fieldset>
-        <legend>Forma de pagamento</legend>
-        <label class="opt"><input type="radio" name="pg" id="pg-pix" value="pix" checked><span><b>Pix</b><br><span class="soft small">Acesso liberado na hora</span></span><b class="num">R$ 397,00</b></label>
-        <label class="opt"><input type="radio" name="pg" id="pg-card" value="cartao"><span><b>Cartão de crédito</b><br><span class="soft small">Até 12 vezes sem juros</span></span><b class="num">12× R$ 39,90</b></label>
-        <label class="opt"><input type="radio" name="pg" id="pg-bol" value="boleto"><span><b>Boleto</b><br><span class="soft small">Acesso em até 2 dias úteis</span></span><b class="num">R$ 397,00</b></label>
-      </fieldset>
-      <p class="err" id="err" role="alert"></p>
-      <div><button class="btn btn-solid" type="submit">Confirmar matrícula</button></div>
-      <div class="done" id="ok" hidden>
-        <b>Matrícula confirmada (simulação).</b>
-        <p>Na versão final, aqui aparece o QR Code do Pix. Depois do pagamento, o acesso chega por e-mail e WhatsApp. <a href="#aluno">Abrir a área do aluno</a></p>
-      </div>
-    </form>
-    <aside class="receipt">
-      <h3>Resumo</h3>
-      <div class="line"><span>Todos os cursos, 12 meses</span><span class="num soft" style="text-decoration:line-through">R$ 1.497,00</span></div>
-      <div class="line"><span>Desconto do combo</span><span class="num">− R$ 1.100,00</span></div>
-      <div class="line total"><span>Total</span><span class="num" id="tot">R$ 397,00</span></div>
-      <p class="soft small">Pagamento processado por um intermediador seguro, como Mercado Pago, Asaas ou Pagar.me.</p>
-    </aside>
-  </div>
-</section>
-
-<!-- 5. ÁREA DO ALUNO -->
-<section class="screen wrap" id="s-aluno" hidden>
-  <div class="hello">
-    <h1>Olá, Maria</h1>
-    <div class="stats">
-      <div><b class="num">3</b><span class="soft small">em andamento</span></div>
-      <div><b class="num">2</b><span class="soft small">certificados</span></div>
-      <div><b class="num">14/10/2027</b><span class="soft small">fim do acesso</span></div>
+      <div class="cats" id="cats"></div>
     </div>
   </div>
-  <div id="mine"></div>
-  <p class="soft small" style="margin-top:16px">Dados de exemplo.</p>
+
+  <div class="block block-soft" id="lista">
+    <div class="wrap">
+      <div class="section-head">
+        <div><h2>Você terá acesso a todos estes cursos</h2><p class="muted">Busque pelo nome ou filtre por área. Toque em um curso para ver os detalhes.</p></div>
+      </div>
+      <div class="tools">
+        <label class="search"><svg class="ico" style="color:var(--muted)"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Buscar curso, por exemplo: Excel, solda, inglês" aria-label="Buscar curso"></label>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por área"></div>
+      <p class="count" id="count"></p>
+      <div class="courses" id="courses"></div>
+      <div style="margin-top:18px"><button class="btn btn-outline" type="button" id="more">Mostrar todos os cursos</button></div>
+    </div>
+  </div>
+
+  <div class="block" id="sobre">
+    <div class="wrap">
+      <div class="section-head"><div><h2>Como funciona</h2></div></div>
+      <ol class="steps">
+        <li><h3>Faça a matrícula</h3><p class="muted">Pague no Pix, no cartão em até 3× ou no boleto.</p></li>
+        <li><h3>Receba o acesso</h3><p class="muted">Login e senha chegam no seu e-mail e WhatsApp.</p></li>
+        <li><h3>Estude quando quiser</h3><p class="muted">Pelo celular ou computador, no seu ritmo.</p></li>
+        <li><h3>Emita o certificado</h3><p class="muted">Ao concluir cada curso, baixe o certificado.</p></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="block block-soft" id="faq">
+    <div class="wrap faq">
+      <div class="section-head"><div><h2>Dúvidas frequentes</h2></div></div>
+      <details open><summary>Como recebo o acesso depois da compra?</summary><p>Assim que o pagamento é confirmado, enviamos login e senha para o seu e-mail e WhatsApp. No Pix e no cartão a liberação é imediata.</p></details>
+      <details><summary>O certificado é reconhecido?</summary><p>São certificados de cursos livres, amparados pela Lei 9.394/96 e pelo Decreto 5.154/04. Valem para currículo, horas complementares e comprovação de capacitação. Cada certificado tem um código que pode ser verificado no site.</p></details>
+      <details><summary>Qual o horário do suporte?</summary><p>De segunda a sábado, das 8h às 18h, pelo WhatsApp (21) 99900-0254.</p></details>
+      <details><summary>Posso estudar pelo celular?</summary><p>Sim. A plataforma funciona no navegador do celular, do tablet e do computador.</p></details>
+      <details><summary>E se eu desistir?</summary><p>Você tem 7 dias após a compra para pedir o reembolso integral.</p></details>
+    </div>
+  </div>
 </section>
 
-<!-- 6. CERTIFICADO -->
-<section class="screen wrap" id="s-certificado" hidden>
-  <div class="verify">
-    <div>
-      <h1>Verificar certificado</h1>
-      <p class="soft measure" style="margin-top:16px">Empresas e escolas podem confirmar se um certificado do Grupo INE-RJ é verdadeiro. Digite o código impresso no rodapé do documento.</p>
-      <form id="vform">
-        <input id="code" value="INE-2026-7F3K-91QD" aria-label="Código do certificado" autocomplete="off">
-        <button class="btn btn-solid" type="submit">Verificar</button>
+<!-- ===== 2. CURSOS ===== -->
+<section class="screen" id="s-cursos" hidden>
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:22px">
+      <div><h1>Nossos cursos</h1><p class="muted">Todos os cursos abaixo estão incluídos no combo de R$ 300,00.</p></div>
+      <a class="btn btn-buy" href="#checkout">Comprar o combo</a>
+    </div>
+    <div class="cats" id="cats2" style="margin-bottom:40px"></div>
+    <div class="tools">
+      <label class="search"><svg class="ico" style="color:var(--muted)"><use href="#i-search"/></svg><input id="q2" type="search" placeholder="Buscar curso" aria-label="Buscar curso"></label>
+    </div>
+    <div class="chips" id="chips2" role="group" aria-label="Filtrar por área"></div>
+    <p class="count" id="count2"></p>
+    <div class="courses" id="courses2"></div>
+  </div>
+  <div style="height:56px"></div>
+</section>
+
+<!-- ===== 3. CURSO ===== -->
+<section class="screen" id="s-curso" hidden><div class="wrap" id="courseBox"></div><div style="height:56px"></div></section>
+
+<!-- ===== 4. CHECKOUT ===== -->
+<section class="screen" id="s-checkout" hidden>
+  <div class="wrap">
+    <div class="stepper"><span class="on"><i>1</i>Seus dados</span><span class="bar"></span><span class="on"><i>2</i>Pagamento</span><span class="bar"></span><span id="st3"><i>3</i>Acesso liberado</span></div>
+    <div class="checkout">
+      <form class="card" id="form" novalidate>
+        <h1 style="font-size:1.7rem">Finalize sua matrícula</h1>
+        <div class="field"><label for="nome">Nome completo (como vai sair no certificado)</label><input id="nome" autocomplete="name" value="Maria das Graças Souza"></div>
+        <div class="row2">
+          <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" value="maria.souza@email.com"></div>
+          <div class="field"><label for="zap">WhatsApp</label><input id="zap" inputmode="tel" autocomplete="tel" value="(21) 99876-5432"></div>
+        </div>
+        <div class="field"><label for="cpf">CPF</label><input id="cpf" inputmode="numeric" value="123.456.789-09"></div>
+        <div class="field"><label>Forma de pagamento</label>
+          <div class="methods">
+            <label class="method"><input type="radio" name="pg" id="pg-pix" value="pix" checked><b>Pix</b><small>R$ 300,00 · acesso na hora</small></label>
+            <label class="method"><input type="radio" name="pg" id="pg-card" value="cartao"><b>Cartão</b><small>3× de R$ 100,00</small></label>
+            <label class="method"><input type="radio" name="pg" id="pg-bol" value="boleto"><b>Boleto</b><small>R$ 300,00 · até 2 dias úteis</small></label>
+          </div>
+        </div>
+        <p class="err" id="err" role="alert"></p>
+        <button class="btn btn-buy btn-lg" type="submit"><svg class="ico"><use href="#i-lock"/></svg>Confirmar matrícula</button>
+        <div class="ok" id="ok" hidden><b>Matrícula confirmada (simulação).</b><p class="small">Na versão final aparece aqui o QR Code do Pix. Depois do pagamento, o acesso chega por e-mail e WhatsApp. <a href="#aluno">Ver a área do aluno</a></p></div>
       </form>
-      <p class="soft small" style="margin-top:10px">Formato: INE-AAAA-XXXX-XXXX</p>
+      <aside class="summary">
+        <div class="photo"><svg class="bg"><use href="#i-cap"/></svg><img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=800&q=70" alt="" loading="lazy" onerror="this.remove()"></div>
+        <div class="in">
+          <h3>Combo todos os cursos</h3>
+          <p class="small muted">Acesso a todos os cursos · 1.000 horas</p>
+          <div class="line"><span>Valor original</span><s class="num muted">R$ 500,00</s></div>
+          <div class="line"><span>Desconto</span><span class="num" style="color:var(--green)">− R$ 200,00</span></div>
+          <div class="line total"><span>Total</span><span class="num" id="tot">R$ 300,00</span></div>
+          <div class="trust" style="margin-top:6px"><span><svg class="ico"><use href="#i-lock"/></svg>Pagamento seguro</span><span><svg class="ico"><use href="#i-shield"/></svg>Garantia de 7 dias</span></div>
+        </div>
+      </aside>
     </div>
-    <div id="vres" aria-live="polite"></div>
   </div>
+  <div style="height:56px"></div>
+</section>
+
+<!-- ===== 5. ALUNO ===== -->
+<section class="screen" id="s-aluno" hidden>
+  <div class="wrap">
+    <div class="student-head"><div class="avatar">MS</div><div><h1 style="font-size:1.7rem">Olá, Maria!</h1><p class="muted small">Exemplo de área do aluno com dados fictícios.</p></div></div>
+    <div class="kpis">
+      <div class="kpi"><span class="muted small">Cursos em andamento</span><b class="num">3</b></div>
+      <div class="kpi"><span class="muted small">Certificados emitidos</span><b class="num">2</b></div>
+      <div class="kpi"><span class="muted small">Acesso válido até</span><b class="num">14/10/2027</b></div>
+    </div>
+    <h2 style="font-size:1.35rem;margin-bottom:14px">Meus cursos</h2>
+    <div class="mycourses" id="mine"></div>
+  </div>
+  <div style="height:56px"></div>
+</section>
+
+<!-- ===== 6. CERTIFICADO ===== -->
+<section class="screen" id="s-certificado" hidden>
+  <div class="wrap">
+    <div class="verify">
+      <div>
+        <h1>Verificar certificado</h1>
+        <p class="muted" style="margin-top:12px;max-width:52ch">Empresas e escolas podem confirmar se um certificado do Grupo INE-RJ é verdadeiro. Digite o código que aparece no rodapé do certificado.</p>
+        <form id="vform">
+          <input id="code" value="INE-2026-7F3K-91QD" aria-label="Código do certificado" autocomplete="off">
+          <button class="btn btn-blue" type="submit">Verificar</button>
+        </form>
+        <p class="example" style="margin-top:8px">Formato: INE-AAAA-XXXX-XXXX</p>
+      </div>
+      <div id="vres" aria-live="polite"></div>
+    </div>
+  </div>
+  <div style="height:56px"></div>
 </section>
 </main>
 
-<footer>
+<div class="refer">
   <div class="wrap">
-    <div>
-      <b>Grupo INE-RJ, Instituto Nacional de Especialização</b>
-      <span class="soft">Rua Evaristo da Veiga, 21, sobreloja, Centro, Rio de Janeiro</span>
-      <span class="soft small">CNPJ, telefone e WhatsApp: inserir os dados oficiais.</span>
-    </div>
-    <div><b>Cursos</b><a href="#catalogo">Todos os cursos</a><a href="#checkout">Matrícula no combo</a></div>
-    <div><b>Ajuda</b><a href="#certificado">Verificar certificado</a><a href="#aluno">Área do aluno</a></div>
+    <h3><b>Venha se qualificar!</b> Indique um amigo e ganhe desconto.</h3>
+    <a class="btn btn-yellow" href="https://wa.me/5521999000254" target="_blank" rel="noopener">Quero indicar</a>
   </div>
+</div>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <h4>Grupo INE-RJ</h4>
+      <span>Cursos online com certificado.</span>
+      <a href="https://wa.me/5521999000254" target="_blank" rel="noopener"><svg class="ico"><use href="#i-zap"/></svg> (21) 99900-0254</a>
+      <span class="small">Suporte de segunda a sábado, 8h às 18h</span>
+    </div>
+    <div>
+      <h4>Categorias</h4>
+      <a href="#cursos" data-cat="adm">Administrativo</a>
+      <a href="#cursos" data-cat="info">Informática e tecnologia</a>
+      <a href="#cursos" data-cat="idi">Idiomas</a>
+      <a href="#cursos" data-cat="prep">Preparatórios</a>
+      <a href="#cursos" data-cat="div">Diversas áreas</a>
+    </div>
+    <div>
+      <h4>Minha conta</h4>
+      <a href="#aluno">Meus cursos</a>
+      <a href="#certificado">Verificar certificado</a>
+      <a href="#inicio" data-scroll="faq">Suporte</a>
+      <a href="#inicio">Política de privacidade</a>
+    </div>
+    <div>
+      <h4>Compra segura</h4>
+      <div class="pay"><span>PIX</span><span>VISA</span><span>MASTERCARD</span><span>ELO</span><span>BOLETO</span></div>
+      <div class="seals"><span><svg class="ico"><use href="#i-lock"/></svg>SSL</span><span><svg class="ico"><use href="#i-shield"/></svg>Site seguro</span></div>
+    </div>
+  </div>
+  <div class="wrap legal"><span>© 2026 Grupo INE-RJ. Todos os direitos reservados. CNPJ: preencher.</span><span>Protótipo para apresentação</span></div>
 </footer>
 
+<a class="zap" href="https://wa.me/5521999000254" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp"><i><svg class="ico" style="width:24px;height:24px"><use href="#i-zap"/></svg></i><span>Fale conosco<small>pelo WhatsApp</small></span></a>
+
 <script>
-const AREAS=["Informática","Design e vídeo","Tecnologia","Gestão e negócios","Manutenção","Idiomas"];
-const C=[
- ["Excel do básico ao avançado","Informática",60],["Access 2016","Informática",40],["Word 2016","Informática",30],
- ["PowerPoint 2016","Informática",25],["Informática básica","Informática",40],["Digitação","Informática",20],
- ["After Effects","Design e vídeo",50],["Photoshop","Design e vídeo",50],["Illustrator","Design e vídeo",45],
- ["Edição de vídeo com Premiere","Design e vídeo",45],["Canva para redes sociais","Design e vídeo",20],
- ["Inteligência artificial no dia a dia","Tecnologia",30],["Lógica de programação","Tecnologia",40],
- ["Python para iniciantes","Tecnologia",50],["Sites com WordPress","Tecnologia",40],["Marketing digital","Tecnologia",40],
- ["Auxiliar administrativo","Gestão e negócios",60],["Departamento pessoal","Gestão e negócios",50],
- ["Atendimento ao cliente","Gestão e negócios",20],["Empreendedorismo","Gestão e negócios",30],
- ["Manutenção de celular","Manutenção",60],["Montagem e manutenção de computadores","Manutenção",60],
- ["Redes de computadores","Manutenção",40],["Inglês básico","Idiomas",60],["Espanhol básico","Idiomas",60]
-].map(([n,a,h],i)=>({id:i,n,a,h}));
-const WALL=[11,0,20,6,7,13,16,1,21,3,9,23,17,15,12,4,24,10,22,8,18,2,14,19,5];
+// Cursos reais, lidos do banner "Conheça nossos cursos" da loja atual
+const CATS={
+  adm:{n:"Administrativos",c:"var(--c-adm)",img:"photo-1552664730-d307ca884978",list:["Administração e mercado de trabalho","Agente de portaria","Almoxarifado","Atendente de farmácia","Conhecimentos bancários","Contabilidade","Departamento pessoal","Elaboração de currículo","Empreendedorismo","Gestão em RH","Hotelaria e turismo","Instagram para vendas","Investimento no mercado financeiro","Logística 4.0","Marketing digital","Matemática financeira","Mídias sociais","Operador de caixa","Supervisão pedagógica","Técnicas de vendas","Telemarketing"]},
+  info:{n:"Informática",c:"var(--c-info)",img:"photo-1517694712202-14dd9538aa97",list:["3D Studio Max básico","Access 2016","After Effects","AutoCAD 2D e 3D","Bitcoin","Blender 3D","Canva","Como ser um YouTuber","CorelDRAW X8","Criação de app Android","Criação de game profissional","Criação de loja virtual","Digitação interativa","Edição de vídeo Premiere","Excel básico e avançado","Google Ads","Google Drive","Illustrator 2022","InDesign","Introdução à informática","JavaScript","Linux","Lógica de programação","Manutenção de celular","Microsoft Word","Montagem e manutenção de PC","Operador de podcast","Photoshop CC","Power BI","PowerPoint","Programação de sites WordPress","Segurança na internet","SketchUp","Windows 10","Windows 11","Dropshipping"]},
+  div:{n:"Diversas áreas",c:"var(--c-div)",img:"photo-1581092160562-40aa08e78837",list:["Atualização em radiologia","Auxiliar de necrópsia","Auxiliar de veterinário","Cuidador de idoso","Designer de cílios e sobrancelha","Eletricista","Fiscal de loja","Frentista","Maquiagem","Manicure e pedicure","Massagem modeladora","NR-10","Operador de empilhadeira","Pá carregadeira","Retroescavadeira","Socorrista APH","Solda MIG/MAG","Solda TIG","TBO - Treinamento Básico Operacional","Auxiliar de creche"]},
+  idi:{n:"Idiomas",c:"var(--c-idi)",img:"photo-1546410531-bb4caa6b424d",list:["Inglês do zero à fluência","Libras","Interactive English"]},
+  prep:{n:"Preparatórios",c:"var(--c-prep)",img:"photo-1434030216411-0b793f4b4173",list:["Biologia","Física","Geografia","História","Matemática para Enem","Português","Química","Técnicas de redação","Filosofia","Artes"]}
+};
+const C=[];Object.entries(CATS).forEach(([k,v])=>v.list.forEach(n=>C.push({id:C.length,n,k})));
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let area="Todas", cur=C[0];
+const img=(id,w)=>`<img src="https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=70" alt="" loading="lazy" onerror="this.remove()">`;
+const abbr=n=>n.replace(/[^A-Za-zÀ-ú0-9 ]/g,"").split(" ").filter(w=>w.length>2||/\d/.test(w)).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+let showAll=false,filt={a:"all",q:""}, cur=C.find(c=>c.n==="Excel básico e avançado");
 
-function renderWall(){
-  $("#wall").innerHTML=WALL.map((i,k)=>`<span class="item"><button type="button" class="${k%3===1?"alt":""}" data-id="${i}" style="animation-delay:${k*25}ms">${esc(C[i].n)}</button><span class="sep" aria-hidden="true"> /</span></span> `).join("")
-    +'<span class="more">e mais 45 cursos</span>';
+$("#totalCourses").textContent=C.length;
+$("#flyerCats").innerHTML=Object.entries(CATS).map(([k,v],i)=>`<button type="button" class="fcat${i===4?" wide":""}" data-cat="${k}" style="background:${v.c}"><b class="num">${v.list.length}</b><span>${esc(v.n)}</span></button>`).join("");
+const catCards=Object.entries(CATS).map(([k,v])=>`<button type="button" class="cat" data-cat="${k}" style="--c:${v.c}">
+  <div class="photo"><svg class="bg"><use href="#c-${k}"/></svg>${img(v.img,500)}</div><span class="glyph"><svg><use href="#c-${k}"/></svg></span>
+  <span class="label"><b>${esc(v.n)}</b><span>${v.list.length} cursos</span></span></button>`).join("");
+$("#cats").innerHTML=catCards;$("#cats2").innerHTML=catCards;
+
+function renderList(sfx){
+  const q=$("#q"+sfx).value.trim().toLowerCase();
+  $("#chips"+sfx).innerHTML=[["all",{n:"Todas",c:"var(--ink)"}],...Object.entries(CATS)].map(([k,v])=>`<button type="button" class="chip" data-chip="${k}" style="--c:${v.c}" aria-pressed="${filt.a===k}"><i></i>${esc(v.n)}</button>`).join("");
+  let list=C.filter(c=>(filt.a==="all"||c.k===filt.a)&&c.n.toLowerCase().includes(q));
+  const total=list.length;
+  if(!sfx){const cut=!showAll&&list.length>24;$("#more").hidden=!cut;$("#more").textContent=`Mostrar todos os ${list.length} cursos`;if(cut)list=list.slice(0,24)}
+  $("#count"+sfx).textContent=total===C.length?`${C.length} cursos incluídos no combo`:`${total} de ${C.length} cursos`;
+  $("#courses"+sfx).innerHTML=list.length?list.map(c=>`<button type="button" class="course" data-id="${c.id}" style="--c:${CATS[c.k].c}"><span class="dot">${esc(abbr(c.n))}</span><span>${esc(c.n)}<small>${esc(CATS[c.k].n)}</small></span></button>`).join("")
+   :`<p class="empty">Nenhum curso encontrado para “${esc(q)}”. Tente outra palavra, como “excel” ou “solda”.</p>`;
 }
-function renderAreas(){
-  $("#areas").innerHTML=AREAS.map(a=>`<button class="area" type="button" data-area="${esc(a)}">${esc(a)}<small>${C.filter(c=>c.a===a).length}</small></button>`).join("");
-}
-function renderCatalog(){
-  const q=$("#q").value.trim().toLowerCase();
-  $("#tabs").innerHTML=["Todas",...AREAS].map(a=>`<button class="tab" type="button" data-tab="${esc(a)}" aria-pressed="${a===area}">${esc(a)}</button>`).join("");
-  const list=C.filter(c=>(area==="Todas"||c.a===area)&&c.n.toLowerCase().includes(q));
-  $("#count").textContent=`${list.length} de 25 cursos nesta amostra (o combo tem mais de 70)`;
-  $("#rows").innerHTML=list.length?list.map(c=>`<tr data-id="${c.id}" tabindex="0">
-    <td class="name">${esc(c.n)}</td><td class="area-col soft">${esc(c.a)}</td>
-    <td class="h num">${c.h} h</td><td class="go">Ver ementa</td></tr>`).join("")
-    :`<tr><td colspan="4" class="empty">Nenhum curso com “${esc(q)}”. Tente uma palavra mais curta, como “excel” ou “vídeo”.</td></tr>`;
-}
+const renderAll=()=>{renderList("");renderList("2")};
+
 function renderCourse(){
-  const c=cur, mods=["Ambiente de trabalho e primeiros passos","Recursos essenciais na prática","Recursos intermediários","Projeto guiado","Recursos avançados","Avaliação final"];
-  const per=Math.round(c.h/mods.length);
-  const rel=C.filter(x=>x.a===c.a&&x.id!==c.id).slice(0,4);
-  $("#s-curso").innerHTML=`<div class="crumbs"><a href="#catalogo">Cursos</a> / ${esc(c.a)}</div>
-  <div class="detail">
-    <div>
-      <h1>${esc(c.n)}</h1>
-      <div class="meta">
-        <div><b class="num">${c.h} h</b><span class="soft">carga horária</span></div>
-        <div><b>Online</b><span class="soft">videoaulas e apostila</span></div>
-        <div><b>Certificado</b><span class="soft">com código de verificação</span></div>
-      </div>
-      <p class="measure">Você aprende com videoaulas curtas, material em PDF e exercícios práticos. Uma avaliação no final libera o certificado.</p>
-      <div class="syllabus">
-        <h3>O que você vai estudar</h3>
-        <table><tbody>${mods.map((m,i)=>`<tr><td>${i+1}</td><td>${m}</td><td class="soft num">${per} h</td></tr>`).join("")}</tbody></table>
-        <p class="soft small" style="margin-top:10px">Ementa de exemplo. Substituir pela ementa real de cada curso.</p>
+  const c=cur,cat=CATS[c.k],rel=C.filter(x=>x.k===c.k&&x.id!==c.id).slice(0,5);
+  $("#courseBox").innerHTML=`<div class="crumbs"><a href="#inicio">Home</a> / <a href="#cursos">Nossos cursos</a> / ${esc(cat.n)}</div>
+  <div class="course-hero" style="--c:${cat.c}">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="cover"><div class="photo"><svg class="bg"><use href="#c-${c.k}"/></svg>${img(cat.img,1200)}</div><div><span class="pill">${esc(cat.n)}</span><h1 style="margin-top:8px;color:#fff">${esc(c.n)}</h1></div></div>
+      <div class="actions"><a class="btn btn-yellow" href="#curso"><svg class="ico"><use href="#i-play"/></svg>Assistir aula grátis</a></div>
+      <div>
+        <h2 style="font-size:1.35rem">Sobre o curso</h2>
+        <p class="muted" style="margin-top:8px;max-width:65ch">Curso online com videoaulas, material de apoio e exercícios. Ao concluir, você emite o certificado com código de verificação.</p>
+        <ul class="learn">
+          <li><svg class="ico"><use href="#i-check"/></svg>Videoaulas para assistir quando quiser</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Material de apoio para baixar</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Exercícios práticos</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Certificado ao concluir</li>
+        </ul>
+        <p class="example" style="margin-top:12px">Texto padrão do protótipo. Substituir pela ementa e carga horária reais de cada curso.</p>
       </div>
     </div>
-    <aside class="side">
-      <span class="soft small">Este curso faz parte do combo</span>
-      <span class="price num"><span class="mark">12× R$ 39,90</span></span>
-      <span>com mais de 70 cursos, ou só este por <b class="num">R$ 79,90</b></span>
-      <a class="btn btn-solid" href="#checkout">Matricular no combo</a>
-      <a class="btn btn-line" href="#checkout">Comprar só este curso</a>
-      ${rel.length?`<div class="related"><b>Também em ${esc(c.a)}</b>${rel.map(r=>`<a href="#curso" data-id="${r.id}">${esc(r.n)}</a>`).join("")}</div>`:""}
+    <aside class="buybox">
+      <span class="tagline"><svg class="ico"><use href="#i-check"/></svg>Incluído no combo</span>
+      <span class="muted small">Leve este e mais ${C.length-1} cursos</span>
+      <div class="now"><b class="num">R$ 300,00</b></div>
+      <span class="small muted">ou 3× de R$ 100,00 no cartão</span>
+      <a class="btn btn-buy btn-lg" href="#checkout"><svg class="ico"><use href="#i-cart"/></svg>Comprar o combo</a>
+      <ul>
+        <li><svg class="ico"><use href="#i-check"/></svg>Acesso a todos os ${C.length} cursos</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>1.000 horas de conteúdo</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Suporte de segunda a sábado</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Garantia de 7 dias</li>
+      </ul>
+      ${rel.length?`<div style="border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:6px"><b class="small">Outros cursos de ${esc(cat.n)}</b>${rel.map(r=>`<a href="#curso" data-id="${r.id}" class="small">${esc(r.n)}</a>`).join("")}</div>`:""}
     </aside>
   </div>`;
 }
 function renderMine(){
-  const rows=[[C[0],100],[C[7],100],[C[11],64],[C[20],28],[C[16],8]];
-  $("#mine").innerHTML=rows.map(([c,p])=>`<div class="progress-row">
-    <div><b>${esc(c.n)}</b><div class="soft small num">${esc(c.a)}, ${c.h} h</div></div>
-    <div class="bar" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso em ${esc(c.n)}"><i style="width:${p}%"></i></div>
-    <div class="state num">${p===100?`<a href="#certificado">Baixar certificado</a>`:`${p}% concluído`}</div>
-  </div>`).join("");
+  const pick=["Excel básico e avançado","Departamento pessoal","Manutenção de celular","Inglês do zero à fluência","Photoshop CC"],prog=[100,100,62,30,8];
+  $("#mine").innerHTML=pick.map((n,i)=>{const c=C.find(x=>x.n===n),cat=CATS[c.k],p=prog[i];
+    return `<article class="mc" style="--c:${cat.c}"><div class="photo"><svg class="bg"><use href="#c-${c.k}"/></svg>${img(cat.img,500)}</div><div class="in">
+      <span class="pill" style="align-self:flex-start">${esc(cat.n)}</span><b>${esc(c.n)}</b>
+      <div class="prog" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso"><i style="width:${p}%"></i></div>
+      <div class="row"><span class="muted num">${p}% concluído</span>${p===100?`<a href="#certificado">Certificado</a>`:`<a href="#curso" data-id="${c.id}">Continuar</a>`}</div></div></article>`}).join("");
 }
 function verify(){
   const code=$("#code").value.trim().toUpperCase();
   $("#vres").innerHTML=/^INE-\d{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)
-   ?`<div class="cert"><div class="seal">CERTIFICADO<br>VÁLIDO</div>
-      <span class="soft">Certificamos que</span><span class="who">Maria das Graças Souza</span>
-      <span>concluiu o curso <b>Excel do básico ao avançado</b>, com carga horária de <b class="num">60 horas</b>, em <span class="num">22/09/2026</span>.</span>
-      <span class="code">Código ${esc(code)}. Registro de exemplo.</span></div>`
-   :`<p class="miss">Não encontramos o código “${esc(code)}”. Confira se digitou no formato INE-AAAA-XXXX-XXXX, igual ao rodapé do certificado.</p>`;
+   ?`<div class="cert"><div class="cert-in">
+      <span class="valid"><svg class="ico"><use href="#i-check"/></svg>Certificado válido</span>
+      <span class="t">CERTIFICADO DE CONCLUSÃO</span>
+      <span class="muted">Certificamos que</span><span class="who">Maria das Graças Souza</span>
+      <span>concluiu o curso <b>Excel básico e avançado</b> em <span class="num">22/09/2026</span>.</span>
+      <span class="example">Código ${esc(code)} · registro de exemplo</span></div></div>`
+   :`<p class="miss">Não encontramos o código “${esc(code)}”. Confira se digitou no formato INE-AAAA-XXXX-XXXX, igual ao certificado.</p>`;
 }
 
-function openCourse(id){cur=C[id];renderCourse();if(location.hash!=="#curso")location.hash="curso";else scrollTo(0,0)}
+function go(hash,scrollId){
+  if(location.hash!==hash){location.hash=hash.slice(1);pendingScroll=scrollId}else{scrollId?document.getElementById(scrollId).scrollIntoView():scrollTo(0,0)}
+}
+let pendingScroll=null;
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-id]");
-  if(t){e.preventDefault();openCourse(+t.dataset.id);return}
-  const a=e.target.closest("[data-area]");
-  if(a){area=a.dataset.area;renderCatalog();location.hash="catalogo";return}
-  const tab=e.target.closest("[data-tab]");
-  if(tab){area=tab.dataset.tab;renderCatalog()}
+  if(t){e.preventDefault();cur=C[+t.dataset.id];renderCourse();go("#curso");return}
+  const cat=e.target.closest("[data-cat]");
+  if(cat){e.preventDefault();filt.a=cat.dataset.cat;renderAll();go("#cursos","courses2");return}
+  const ch=e.target.closest("[data-chip]");
+  if(ch){filt.a=ch.dataset.chip;renderAll();return}
+  const sc=e.target.closest("[data-scroll]");
+  if(sc){e.preventDefault();go("#inicio",sc.dataset.scroll);closeMenu();return}
+  if(e.target.closest(".menu a"))closeMenu();
 });
-document.addEventListener("keydown",e=>{const r=e.target.closest&&e.target.closest("tr[data-id]");if(r&&e.key==="Enter")openCourse(+r.dataset.id)});
-$("#q").addEventListener("input",renderCatalog);
-document.querySelectorAll('input[name="pg"]').forEach(r=>r.addEventListener("change",()=>{$("#tot").textContent=r.value==="cartao"?"12× R$ 39,90":"R$ 397,00"}));
+["q","q2"].forEach(id=>$("#"+id).addEventListener("input",e=>{$("#q").value=$("#q2").value=e.target.value;renderAll()}));
+const closeMenu=()=>{$("#menu").classList.remove("open");$("#burger").setAttribute("aria-expanded","false")};
+$("#burger").addEventListener("click",()=>{const o=$("#menu").classList.toggle("open");$("#burger").setAttribute("aria-expanded",o)});
+$("#shareBtn").addEventListener("click",()=>{
+  const url="https://estudandoead.com/grupoine/loja_virtual/vercombo.php?curso=COMBO,%20TODOS%20OS%20CURSOS";
+  (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>$("#shareMsg").textContent="Link do combo copiado. Agora é só colar no WhatsApp.")
+  .catch(()=>$("#shareMsg").textContent="Copie o link: "+url);
+});
+document.querySelectorAll('input[name="pg"]').forEach(r=>r.addEventListener("change",()=>{$("#tot").textContent=r.value==="cartao"?"3× R$ 100,00":"R$ 300,00"}));
 $("#form").addEventListener("submit",e=>{
   e.preventDefault();
   const empty=["nome","email","zap","cpf"].find(k=>!$("#"+k).value.trim());
-  if(empty){$("#err").textContent="Preencha "+$('label[for="'+empty+'"]').textContent.split(",")[0].toLowerCase()+" para continuar.";$("#"+empty).focus();return}
+  if(empty){$("#err").textContent="Preencha o campo “"+$('label[for="'+empty+'"]').textContent.split(" (")[0]+"” para continuar.";$("#"+empty).focus();return}
   if(!/^\S+@\S+\.\S+$/.test($("#email").value)){$("#err").textContent="Confira o e-mail. Ele precisa ter o formato nome@provedor.com.";$("#email").focus();return}
   $("#err").textContent="";$("#ok").hidden=false;$("#st3").classList.add("on");
 });
+$("#more").addEventListener("click",()=>{showAll=true;renderList("")});
 $("#vform").addEventListener("submit",e=>{e.preventDefault();verify()});
 
-const SCREENS=["inicio","catalogo","curso","checkout","aluno","certificado"];
+const SCREENS=["inicio","cursos","curso","checkout","aluno","certificado"];
 function route(){
-  const h=(location.hash||"#inicio").slice(1), s=SCREENS.includes(h)?h:"inicio";
+  const h=(location.hash||"#inicio").slice(1),s=SCREENS.includes(h)?h:"inicio";
   SCREENS.forEach(x=>$("#s-"+x).hidden=x!==s);
-  document.querySelectorAll(".nav a").forEach(a=>{if(a.getAttribute("href")==="#"+s)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
-  scrollTo(0,0);
+  document.querySelectorAll(".menu a").forEach(a=>{if(a.getAttribute("href")==="#"+s&&!a.dataset.scroll)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(pendingScroll){const id=pendingScroll;pendingScroll=null;requestAnimationFrame(()=>document.getElementById(id).scrollIntoView())}else scrollTo(0,0);
 }
-renderWall();renderAreas();renderCatalog();renderCourse();renderMine();verify();
+renderAll();renderCourse();renderMine();verify();
 addEventListener("hashchange",route);route();
 </script>
 </body>
