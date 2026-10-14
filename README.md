@@ -7,6 +7,6 @@ Protótipo da nova loja de cursos online do Grupo INE-RJ, refazendo a página
 - `prototipo/app.html` — mesmo conteúdo, sem o cabeçalho HTML (fonte usada para gerar o `index.html`).
 - `ROADMAP.md` — diagnóstico da loja atual e o caminho recomendado.
 
-Direção visual: verde-quadro, papel branco e amarelo marca-texto; tipografia Archivo (condensada nos títulos). O topo da página é uma "parede" com os nomes dos cursos.
+Baseado na loja atual (estudandoead.com/grupoine): mesma estrutura, cores da marca (verde e azul), lista real de 90 cursos em 5 categorias e preço real do combo (R$ 300,00 ou 3× R$ 100,00). As fotos vêm do Unsplash; sem internet, aparece um degradê com o ícone da categoria.
 
 Preços, alunos e certificados exibidos são exemplos.
