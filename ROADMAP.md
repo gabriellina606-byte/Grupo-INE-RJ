@@ -10,14 +10,15 @@ O que se sabe da página atual:
 - Páginas PHP com o nome do produto na URL (`?curso=COMBO,%20TODOS%20OS%20CURSOS`): URL feia, ruim para SEO e para compartilhar.
 - Combo com "mais de 70 cursos", 1000 horas, categoria "Combos", certificado e link "Verificar certificado".
 - Exemplos de cursos listados: Access 2016, After Effects, Inteligência Artificial, Manutenção de Celular.
-- O preço não aparece nos resultados de busca (provavelmente só aparece no checkout).
+- Preço do combo: de R$ 500,00 por R$ 300,00, ou 3× de R$ 100,00.
+- A lista de cursos (cerca de 90, em 5 categorias) aparece dentro de uma imagem, ilegível no celular, e numa lista longa no fim da página, sem busca.
 
 Problemas típicos dessa plataforma que a nova versão resolve:
 
 | Problema | Impacto | Solução no protótipo |
 |---|---|---|
 | Domínio e marca de terceiros | Pouca confiança, sem identidade | Domínio próprio (ex.: `cursos.grupoine-rj.com.br`) |
-| Preço escondido até o checkout | Abandono | Preço e parcelamento na primeira dobra |
+| Cursos listados dentro de uma imagem | Ilegível no celular, invisível para o Google | Lista em texto, com busca e filtro por área |
 | Lista longa sem busca/filtro | Aluno não acha o curso | Catálogo com busca e filtro por área |
 | Sem página por curso | Sem SEO, sem anúncio por curso | Página de detalhe com ementa e carga horária |
 | Checkout genérico | Conversão baixa | Checkout em 1 tela, Pix em destaque |
@@ -38,7 +39,7 @@ Para abrir: dê duplo clique em `index.html` ou publique no GitHub Pages (Settin
 
 ### Fase 0 — Apresentação (agora)
 - Mostrar este protótipo ao interessado.
-- Coletar: lista real dos cursos com carga horária e ementa, preços, CNPJ, telefone/WhatsApp, logo e cores oficiais, depoimentos reais com autorização.
+- Coletar: carga horária e ementa de cada curso, CNPJ, telefone/WhatsApp, logo e cores oficiais, depoimentos reais com autorização.
 
 ### Fase 1 — Loja (2 a 4 semanas)
 - **Stack sugerida:** Next.js + Tailwind no front, hospedagem na Vercel; banco Supabase (Postgres + login).
@@ -53,7 +54,7 @@ Duas opções:
 - **Completa:** plataforma própria (vídeos no Vimeo/Bunny Stream ou Panda Video, progresso por aula, prova final, certificado em PDF com código e QR Code).
 
 ### Fase 3 — Crescimento
-- Assinatura mensal (recorrência) além do combo anual.
+- Assinatura mensal (recorrência) além do combo.
 - Cupons e afiliados.
 - Recuperação de carrinho por e-mail/WhatsApp.
 - Painel administrativo com vendas, alunos ativos e conclusões.
@@ -61,4 +62,4 @@ Duas opções:
 ## 4. Pontos de atenção
 - Certificados de cursos livres não são diplomas MEC: comunicar isso com clareza evita reclamações.
 - Cumprir LGPD (aviso de privacidade, consentimento para WhatsApp) e o direito de arrependimento de 7 dias (CDC, art. 49).
-- Todos os preços, alunos e certificados do protótipo são fictícios.
+- Preços e cursos do protótipo vêm da loja atual. A aluna, o certificado e as ementas são exemplos.
