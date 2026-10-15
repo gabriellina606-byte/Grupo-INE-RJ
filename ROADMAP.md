@@ -44,13 +44,14 @@ Para abrir: dê duplo clique em `index.html` ou publique no GitHub Pages (Settin
 ### Fase 1 — Loja (2 a 4 semanas)
 - **Stack sugerida:** Next.js + Tailwind no front, hospedagem na Vercel; banco Supabase (Postgres + login).
 - **Pagamento:** Asaas, Mercado Pago ou Pagar.me (Pix, cartão parcelado, boleto, webhooks de confirmação).
-- **Conteúdo:** catálogo vindo do banco (um registro por curso: nome, área, horas, ementa, preço avulso).
+- **Matrícula automática:** função no servidor que usa a API V2 da Escola Avançada para cadastrar o aluno e liberar os cursos. Detalhes em [`docs/INTEGRACAO.md`](docs/INTEGRACAO.md).
+- **Conteúdo:** catálogo lido da API da Escola Avançada (nome, descrição, carga horária, capa e lista de aulas), com cache.
 - **SEO:** URL por curso (`/cursos/excel-basico-ao-avancado`), meta tags, sitemap, Google Analytics + Pixel da Meta.
 - **WhatsApp:** botão flutuante e envio do acesso após o pagamento (Z-API ou API oficial do WhatsApp).
 
 ### Fase 2 — Ensino
 Duas opções:
-- **Rápida:** manter a plataforma de aulas atual e só trocar a loja (o pagamento aprovado cria o aluno lá, se houver API ou exportação).
+- **Rápida (confirmada):** manter a plataforma de aulas da Escola Avançada e trocar só a loja. A plataforma é alugada e não pode ser editada, mas aceita integração via API.
 - **Completa:** plataforma própria (vídeos no Vimeo/Bunny Stream ou Panda Video, progresso por aula, prova final, certificado em PDF com código e QR Code).
 
 ### Fase 3 — Crescimento
